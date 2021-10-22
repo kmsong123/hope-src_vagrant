@@ -1,0 +1,52 @@
+Vagrant.require_version ">=2.2.4"
+
+# Install plugins
+required_plugins = %w(vagrant-disksize vagrant-proxyconf)
+required_plugins.each do |plugin|
+    raise "\"#{plugin}\" plugin is not installed! Use sudo vagrant plugin install <plugin>" unless Vagrant.has_plugin? plugin
+end
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu1804"
+  #config.vm.synced_folder ".", "/vagrant_shared", disabled: false
+
+  #cred_vagrant_user = "kms"
+  #cred_vagrant_pw = "password"
+  #config.ssh.username = "kms"
+  #config.ssh.password = "password"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "16384"
+    vb.cpus = 8
+    vb.gui = false
+    vb.customize ["modifyvm", :id, "--vram", 128]
+    vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
+    vb.customize ["modifyvm", :id, "--hwvirtex", "off"]
+    vb.customize ["modifyvm", :id, "--accelerate3d", "off"]
+    vb.customize ["setextradata", "global", "GUI/SuppressMessages", "all" ]
+ end
+  
+    #proxyvip.draper.com -> add to RUBY variable
+    config.proxy.http = "http://140.102.12.12:3128"
+    config.proxy.https = "http://140.102.12.12:3128"
+    config.proxy.no_proxy = "127.0.0.1,localhost"
+    # Add git proxy configuration
+    config.vm.provision "shell", inline: "git config --global http.proxy 140.102.12.12:3128" 
+    config.vm.provision "shell", inline: "git config --global https.proxy 140.102.12.12:3128" 
+    config.vm.provision "shell", inline: "git config --global http.sslverify false"
+=begin
+    #config.vm.provision "shell", inline: "sudo apt-get -y update"
+    #config.vm.provision "shell", inline: "sudo apt-get install -y make vim sudo autoconf automake autogen autotools-dev curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf iverilog libelf-dev socat expat libexpat1-dev git python3 python3-setuptools cmake ninja-build clang haskell-platform haskell-stack binutils-dev python3-distutils python3-pytest python3-pytest-xdist python3-pytest-timeout python3-pyelftools git automake autoconf libtool g++ cmake libboost-dev libboost-program-options-dev libyaml-cpp-dev libgflags-dev python3-psutil xterm verilator virtualenv python3-pip libftdi1-2 libusb-1.0-0-dev libtinfo5 libglib2.0-dev libpixman-1-dev pkg-config device-tree-compiler"
+    config.vm.provision "shell", path: "install.sh", privileged: false
+    config.vm.provision "shell", inline: "stack upgrade --binary-only --allow-different-user --local-bin-path /usr/local/bin"
+=end
+
+    config.vm.provision "shell", inline: "git clone https://github.com/draperlaboratory/hope-src.git"
+    config.vm.provision "shell", inline: "echo 'cloned repo'"
+    config.vm.provision "shell", inline: "mkdir -p ~/.local/isp"
+    config.vm.provision "shell", inline: "cd hope-src && ./init-submodules.sh"
+    config.vm.provision "shell", inline: "cd hope-src && source ./tools/isp-support/set-env"
+    #config.vm.provision "shell", inline: "./tools/isp-support/install-dependencies-ubuntu1804"
+    #config.vm.provision "shell", inline: "cd hope-src && make"
+
+end
+
