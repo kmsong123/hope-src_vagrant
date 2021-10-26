@@ -15,7 +15,7 @@ This script installs Vagrant as well as necessary Vagrant plugins and VM provide
 To create the VM: `sudo vagrant up`
 This will create the virtual machine "default" with the hope-src cloned and built.  Note that the build currently takes approximately 4 hours to complete.  
 
-To enter VM shell after provisioning is complete: `sudo vagrant ssh default`
+To enter VM shell after provisioning is complete: `sudo vagrant ssh default`.
 
 ##### Miscellaneous Commands and Notes:
 To see all running VM's: `sudo vagrant global-status --prune`.  
