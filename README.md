@@ -18,8 +18,8 @@ This will create the virtual machine "default" with the hope-src cloned and buil
 To enter VM shell after provisioning is complete: `sudo vagrant ssh default`
 
 ##### Miscellaneous Commands and Notes:
-To see all running VM's: `sudo vagrant global-status --prune`
-To destroy VM's: `sudo vagrant destroy -f <name of VM>`
+To see all running VM's: `sudo vagrant global-status --prune`.  
+To destroy VM's: `sudo vagrant destroy -f <name of VM>`.  
 Note that the folder `vagrant_shared` is a shared folder between the host and VM. 
-The shared folder will be mounted inside the home directory of the virtual machine.
+This shared folder will be mounted inside the home directory of the virtual machine.
 
