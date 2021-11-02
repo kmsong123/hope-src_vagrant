@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder "./vagrant_shared", "/home/vagrant/vagrant_shared"
 
   config.vm.provider "virtualbox" do |vb|
-    vb.name = "test_vm"
+    #vb.name = "test_vm"
     vb.memory = "16384"
     vb.cpus = 8
     vb.gui = false
@@ -23,12 +23,12 @@ Vagrant.configure("2") do |config|
  end
   
     # Draper proxy settings
-    config.proxy.http = "http://140.102.12.12:3128"
-    config.proxy.https = "http://140.102.12.12:3128"
+    config.proxy.http = "http://10.11.80.231:3128"
+    config.proxy.https = "http://10.11.80.231:3128"
     config.proxy.no_proxy = "127.0.0.1,localhost"
     # Add git proxy configuration
-    config.vm.provision "shell", inline: "git config --global http.proxy 140.102.12.12:3128" 
-    config.vm.provision "shell", inline: "git config --global https.proxy 140.102.12.12:3128" 
+    config.vm.provision "shell", inline: "git config --global http.proxy 10.11.80.231:3128" 
+    config.vm.provision "shell", inline: "git config --global https.proxy 10.11.80.231:3128" 
     config.vm.provision "shell", inline: "git config --global http.sslverify false"
     # Install system environment requirements
     config.vm.provision "shell", path: "install.sh", privileged: false
